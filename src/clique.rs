@@ -29,22 +29,22 @@ impl Hash for Node {
 }
 
 #[derive(Serialize, Deserialize, Eq, Debug)]
-pub struct Connection(pub Node, pub Node);
+pub struct Connection(pub usize, pub usize);
 
 impl PartialEq<Connection> for Connection {
     fn eq(&self, other: &Connection) -> bool {
-        max(self.0.id, self.1.id) == max(other.0.id, other.1.id) && min(self.0.id, self.1.id) == min(other.0.id, other.1.id)
+        max(self.0, self.1) == max(other.0, other.1) && min(self.0, self.1) == min(other.0, other.1)
     }
 }
 
 impl Hash for Connection {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        if self.0.id > self.1.id {
-            self.0.id.hash(state);
-            self.1.id.hash(state);
+        if self.0 > self.1 {
+            self.0.hash(state);
+            self.1.hash(state);
         } else {
-            self.1.id.hash(state);
-            self.0.id.hash(state);
+            self.1.hash(state);
+            self.0.hash(state);
         }
     }
 }

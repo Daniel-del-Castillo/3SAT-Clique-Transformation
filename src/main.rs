@@ -1,7 +1,7 @@
-use ron::ser::{to_string_pretty, PrettyConfig};
-use std::{fs::File, collections::HashSet};
 use ron::de::from_str;
+use ron::ser::{to_string_pretty, PrettyConfig};
 use std::io::Read;
+use std::{collections::HashSet, fs::File};
 
 mod clique;
 use clique::*;
@@ -23,3 +23,20 @@ fn three_sat_from_ron(filename: &str) -> ron::Result<ThreeSAT> {
     from_str(&contents)
 }
 
+fn three_sat_to_clique(instance: ThreeSAT) -> Clique {
+    let mut nodes = HashSet::new();
+    let mut edges = HashSet::new();
+    let mut counter = 0;
+
+    for clause in instance.clauses {
+        let literals = [clause.0, clause.1, clause.2];
+        for literal in literals {
+            nodes.insert(Node {
+                id: counter,
+                literal,
+            });
+            counter += 1;
+        }
+    }
+    Clique{nodes, edges} // TODO
+}
