@@ -18,6 +18,7 @@ impl PartialEq<Connection> for Connection {
         max(self.0, self.1) == max(other.0, other.1) && min(self.0, self.1) == min(other.0, other.1)
     }
 }
+
 impl Hash for Connection {
     fn hash<H: Hasher>(&self, state: &mut H) {
         if self.0 > self.1 {

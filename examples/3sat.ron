@@ -1,0 +1,34 @@
+(
+    clauses: [
+        ((
+            id: 'a',
+            negated: false,
+        ), (
+            id: 'a',
+            negated: false,
+        ), (
+            id: 'b',
+            negated: false,
+        )),
+        ((
+            id: 'a',
+            negated: true,
+        ), (
+            id: 'b',
+            negated: true,
+        ), (
+            id: 'b',
+            negated: true,
+        )),
+        ((
+            id: 'a',
+            negated: true,
+        ), (
+            id: 'b',
+            negated: false,
+        ), (
+            id: 'b',
+            negated: false,
+        )),
+    ],
+)
