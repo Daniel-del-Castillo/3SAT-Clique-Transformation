@@ -1,5 +1,5 @@
 use ron::ser::{to_string_pretty, PrettyConfig};
-use std::fs::File;
+use std::{fs::File, collections::HashSet};
 use ron::de::from_str;
 use std::io::Read;
 
@@ -22,3 +22,4 @@ fn three_sat_from_ron(filename: &str) -> ron::Result<ThreeSAT> {
     file.read_to_string(&mut contents)?;
     from_str(&contents)
 }
+
