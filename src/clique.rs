@@ -4,13 +4,13 @@ use std::cmp::{max, min};
 use std::collections::HashSet;
 use std::hash::{Hash, Hasher};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Clique {
     pub nodes: HashSet<Node>,
     pub edges: HashSet<Connection>,
 }
 
-#[derive(Serialize, Deserialize, Eq, Debug)]
+#[derive(Serialize, Deserialize, Eq, Debug, Clone, Copy)]
 pub struct Node {
     pub id: usize,
     pub literal: Literal,
@@ -28,7 +28,7 @@ impl Hash for Node {
     }
 }
 
-#[derive(Serialize, Deserialize, Eq, Debug)]
+#[derive(Serialize, Deserialize, Eq, Debug, Clone, Copy)]
 pub struct Connection(pub usize, pub usize);
 
 impl PartialEq<Connection> for Connection {
