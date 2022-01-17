@@ -7,19 +7,31 @@ use std::{collections::HashSet, fs::File};
 mod clique;
 use clique::*;
 mod three_sat;
+use clap::Parser;
 use three_sat::*;
 
 fn main() {
-    let example = three_sat_from_ron("examples/3sat_2.ron").expect("Could not read 3SAT");
+    let args = Args::parse();
+    let example = three_sat_from_ron(&args.input_file).expect("Could not read 3SAT");
     let result = three_sat_to_clique(&example);
-    println!(
-        "{}",
-        to_string_pretty(&result, PrettyConfig::new()).unwrap()
-    );
-    let dot_representation = clique_to_dot(&result);
-    let mut file = File::create("dot/graph.dot").expect("Unable to create file");
-    file.write_all(dot_representation.as_bytes())
-        .expect("Unable to write");
+    let clique_ron = to_string_pretty(&result, PrettyConfig::new()).unwrap();
+
+    match args.output_file {
+        None => println!("{}", clique_ron),
+        Some(file_name) => {
+            let mut output_file = File::create(file_name).expect("Unable to create file");
+            output_file
+                .write_all(clique_ron.as_bytes())
+                .expect("Unable to write");
+        }
+    }
+
+    if let Some(file_name) = args.dot_output {
+        let mut dot_file = File::create(file_name).expect("Unable to create file");
+        dot_file
+            .write_all(clique_to_dot(&result).as_bytes())
+            .expect("Unable to write");
+    }
 }
 
 fn three_sat_from_ron(filename: &str) -> ron::Result<ThreeSAT> {
@@ -75,4 +87,16 @@ fn clique_to_dot(clique: &Clique) -> String {
     }
     dot_representation.push('}');
     dot_representation
+}
+
+#[derive(Parser, Debug)]
+#[clap(author, version, about, long_about = None)]
+struct Args {
+    input_file: String,
+
+    #[clap(short, long)]
+    output_file: Option<String>,
+
+    #[clap(short, long)]
+    dot_output: Option<String>,
 }
