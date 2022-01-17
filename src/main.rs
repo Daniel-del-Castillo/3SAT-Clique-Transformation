@@ -10,7 +10,7 @@ mod three_sat;
 use three_sat::*;
 
 fn main() {
-    let example = three_sat_from_ron("examples/3sat.ron").expect("Could not read 3SAT");
+    let example = three_sat_from_ron("examples/3sat_2.ron").expect("Could not read 3SAT");
     let result = three_sat_to_clique(&example);
     println!(
         "{}",
